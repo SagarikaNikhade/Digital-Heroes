@@ -1,0 +1,82 @@
+.admin-container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 30px;
+  font-family: Arial, sans-serif;
+  background: #f7f8fa;
+  min-height: 100vh;
+}
+
+/* Header */
+.admin-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Card */
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+}
+
+/* Buttons */
+button {
+  padding: 10px 14px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-weight: 500;
+}
+
+button:hover {
+  background: #1e4fd6;
+}
+
+button:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+/* Inputs */
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+textarea {
+  min-height: 80px;
+  resize: none;
+}
+
+/* Draw section */
+.draw-box {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.winner-box {
+  padding: 10px;
+  margin-top: 8px;
+  background: #f3f4f6;
+  border-radius: 8px;
+}
+
+/* Section title */
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}

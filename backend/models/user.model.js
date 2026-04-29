@@ -4,7 +4,11 @@ const userSchema = new mongoose.Schema({
     name: String,
     email: { type: String, unique: true },
     password: String,
-    role: { type: String, default: "user" },
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user",
+    },
 
     subscription: {
         plan: { type: String }, // monthly/yearly
@@ -15,8 +19,13 @@ const userSchema = new mongoose.Schema({
     },
 
     charity: {
-        charityId: String,
-        percentage: { type: Number, default: 10 }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Charity",
+    },
+
+    charityPercent: {
+        type: Number,
+        default: 10,
     }
 });
 

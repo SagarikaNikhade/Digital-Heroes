@@ -131,3 +131,35 @@
   gap: 10px;
   margin-top: 10px;
 }
+
+.winner-box {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  padding: 12px;
+  border-radius: 10px;
+  color: white;
+  margin-top: 10px;
+}
+
+.card h4 {
+  margin-top: 10px;
+}
+
+select, input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+button {
+  margin-top: 10px;
+}
+
+.card {
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}

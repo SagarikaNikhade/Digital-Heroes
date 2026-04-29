@@ -20,6 +20,18 @@ type Score = {
 
 type Draw = {
   numbers: number[];
+  prizePool: number;
+  jackpotCarryForward: number;
+  tiers: {
+    match5: number;
+    match4: number;
+    match3: number;
+  };
+  winners: {
+    userId: string;
+    matchCount: number;
+    prize: number;
+  }[];
 };
 
 export default function Dashboard() {
@@ -28,6 +40,10 @@ export default function Dashboard() {
   const [date, setDate] = useState<string>("");
   const [scores, setScores] = useState<Score[]>([]);
   const [draw, setDraw] = useState<Draw | null>(null);
+  const [myResult, setMyResult] = useState<any>(null);
+  const [charities, setCharities] = useState<any[]>([]);
+  const [selectedCharity, setSelectedCharity] = useState("");
+  const [percent, setPercent] = useState(10);
   const router = useRouter();
 
   useEffect(() => {
@@ -51,7 +67,8 @@ export default function Dashboard() {
           fetchScores();
         }
 
-        fetchDraw();
+        fetchDraw(res.data._id); // ✅ pass userId
+        fetchCharities();
       } catch {
         router.push("/login");
       }
@@ -59,6 +76,36 @@ export default function Dashboard() {
 
     init();
   }, []);
+
+  const fetchCharities = async () => {
+    const res = await axios.get("http://localhost:8000/charity");
+    setCharities(res.data);
+  };
+
+  const handleSelectCharity = async () => {
+    const token = localStorage.getItem("digital-token");
+
+    if (!selectedCharity) {
+      alert("Please select a charity");
+      return;
+    }
+
+    if (percent < 10) {
+      alert("Minimum 10% required");
+      return;
+    }
+
+    await axios.post(
+      "http://localhost:8000/charity/select",
+      {
+        charityId: selectedCharity,
+        percent,
+      },
+      { headers: { Authorization: token } }
+    );
+
+    alert("Charity selected");
+  };
 
   const fetchScores = async () => {
     const token = localStorage.getItem("digital-token");
@@ -70,11 +117,20 @@ export default function Dashboard() {
     setScores(res.data);
   };
 
-  const fetchDraw = async () => {
+  const fetchDraw = async (userId: string) => {
     try {
       const res = await axios.get("http://localhost:8000/draw/latest");
-      setDraw(res.data);
-    } catch (err) {
+      const drawData = res.data;
+
+      setDraw(drawData);
+
+      // ✅ FIX ObjectId comparison
+      const myWin = drawData.winners.find(
+        (w: any) => w.userId.toString() === userId
+      );
+
+      setMyResult(myWin || null);
+    } catch {
       console.log("No draw yet");
     }
   };
@@ -257,10 +313,42 @@ export default function Dashboard() {
         </div>
 
         <div className="card">
-          <h3>Latest Draw</h3>
+          <h3>🎰 Latest Draw</h3>
 
           {draw ? (
-            <p>{draw.numbers.join(", ")}</p>
+            <>
+              <p>
+                <b>Numbers:</b> {draw.numbers.join(", ")}
+              </p>
+
+              <p>
+                <b>Prize Pool:</b> ₹{draw.prizePool}
+              </p>
+
+              <p>
+                <b>Jackpot:</b> ₹{draw.jackpotCarryForward}
+              </p>
+
+              <div>
+                <h4>Prize Distribution</h4>
+                <p>5 Match: ₹{draw.tiers.match5}</p>
+                <p>4 Match: ₹{draw.tiers.match4}</p>
+                <p>3 Match: ₹{draw.tiers.match3}</p>
+              </div>
+
+              <hr />
+
+              <h4>Your Result</h4>
+
+              {myResult ? (
+                <div className="winner-box">
+                  <p>Match: {myResult.matchCount}</p>
+                  <p>Won: ₹{myResult.prize}</p>
+                </div>
+              ) : (
+                <p>No win this time</p>
+              )}
+            </>
           ) : (
             <p>No draw yet</p>
           )}
@@ -275,8 +363,40 @@ export default function Dashboard() {
         {/* Winnings */}
         <div className="card">
           <h3>Winnings</h3>
-          <p>₹0</p>
+          <p>
+            ₹{myResult ? myResult.prize : 0}
+          </p>
         </div>
+      </div>
+
+      <div className="card">
+        <h3>❤️ Support a Charity</h3>
+
+        <select
+          value={selectedCharity}
+          onChange={(e) => setSelectedCharity(e.target.value)}
+        >
+          <option value="">Select charity</option>
+          {charities.map((c) => (
+            <option key={c._id} value={c._id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+
+        <input
+          type="number"
+          value={percent}
+          min={10}
+          max={100}
+          onChange={(e) => setPercent(Number(e.target.value))}
+        />
+
+        <p>You are donating {percent}% ❤️</p>
+
+        <button onClick={handleSelectCharity}>
+          Save Preference
+        </button>
       </div>
     </div>
   );

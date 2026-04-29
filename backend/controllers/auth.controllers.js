@@ -33,7 +33,7 @@ export const login = async (req, res) => {
 
   const token = jwt.sign({ id: user._id }, "secret");
 
-  res.json({ token });
+  res.json({ user: user, token:token });
 };
 
 export const getMe = async (req, res) => {

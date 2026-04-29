@@ -1,8 +1,27 @@
 import mongoose from "mongoose";
 
 const drawSchema = new mongoose.Schema({
-  numbers: [Number], // 5 numbers
-  month: String,     // "2026-04"
+  numbers: {
+    type: [Number],
+    required: true,
+  },
+
+  month: {
+    type: String, // "2026-04"
+    required: true,
+  },
+
+  prizePool: {
+    type: Number,
+    default: 0,
+  },
+
+  tiers: {
+    match5: Number,
+    match4: Number,
+    match3: Number,
+  },
+
   winners: [
     {
       userId: {
@@ -13,6 +32,12 @@ const drawSchema = new mongoose.Schema({
       prize: Number,
     },
   ],
+
+  jackpotCarryForward: {
+    type: Number,
+    default: 0,
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,

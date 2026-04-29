@@ -11,7 +11,7 @@ export default function Login() {
     password: "",
   });
 
-  const handleChange = (e:any) => {
+  const handleChange = (e: any) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -27,8 +27,19 @@ export default function Login() {
     const data = await res.json();
 
     if (data.token) {
+      // ✅ store token
       localStorage.setItem("digital-token", data.token);
-      router.push("/pages/dashboard");
+
+      // ✅ store role
+      localStorage.setItem("digital-role", data.user.role);
+
+      // ✅ role-based redirect
+      if (data.user.role === "admin") {
+        router.push("/pages/admin");
+      } else {
+        router.push("/pages/dashboard");
+      }
+
     } else {
       alert(data.message || "Login failed");
     }
@@ -56,7 +67,7 @@ export default function Login() {
 
         <p>
           Don’t have an account?{" "}
-          <span onClick={() => router.push("/signup")}>Sign Up</span>
+          <span onClick={() => router.push("/pages/signup")}>Sign Up</span>
         </p>
       </div>
     </div>

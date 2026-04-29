@@ -6,7 +6,7 @@ export const createOrder = async (req, res) => {
   try {
     const { plan } = req.body;
 
-    const amount = plan === "yearly" ? 5 : 1; // in INR paise
+    const amount = plan === "yearly" ? 50000 : 5000; // in INR paise
     // ₹50 = 5000 paise (adjust as you want)
 
     const options = {
