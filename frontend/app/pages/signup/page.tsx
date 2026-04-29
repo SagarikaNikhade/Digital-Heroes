@@ -20,7 +20,7 @@ export default function Signup() {
     const handleSignup = async () => {
         try {
             const res = await axios.post(
-                "http://localhost:8000/user/signup",
+                "https://backend-digital-hero-1.onrender.com/user/signup",
                 form 
             );
 
@@ -65,7 +65,7 @@ export default function Signup() {
 
                 <p>
                     Already have an account?{" "}
-                    <span onClick={() => router.push("/login")}>Login</span>
+                    <span onClick={() => router.push("/pages/login")}>Login</span>
                 </p>
             </div>
         </div>

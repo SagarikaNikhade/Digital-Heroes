@@ -26,7 +26,7 @@ export default function AdminPage() {
             }
 
             const res = await axios.post(
-                "http://localhost:8000/charity/create",
+                "https://backend-digital-hero-1.onrender.com/charity/create",
                 {
                     name: charityName,
                     description,
@@ -59,7 +59,7 @@ export default function AdminPage() {
             const token = localStorage.getItem("digital-token");
 
             const res = await axios.post(
-                "http://localhost:8000/draw/run",
+                "https://backend-digital-hero-1.onrender.com/draw/run",
                 {},
                 { headers: { Authorization: token } }
             );
@@ -74,7 +74,7 @@ export default function AdminPage() {
 
     const fetchLatestDraw = async () => {
         try {
-            const res = await axios.get("http://localhost:8000/draw/latest");
+            const res = await axios.get("https://backend-digital-hero-1.onrender.com/draw/latest");
             setDraw(res.data);
         } catch {
             console.log("No draw yet");

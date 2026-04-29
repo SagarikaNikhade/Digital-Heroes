@@ -50,13 +50,13 @@ export default function Dashboard() {
     const token = localStorage.getItem("digital-token");
 
     if (!token) {
-      router.push("/login");
+      router.push("/pages/login");
       return;
     }
 
     const init = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/user/me", {
+        const res = await axios.get("https://backend-digital-hero-1.onrender.com/user/me", {
           headers: { Authorization: token },
         });
 
@@ -70,7 +70,7 @@ export default function Dashboard() {
         fetchDraw(res.data._id); // ✅ pass userId
         fetchCharities();
       } catch {
-        router.push("/login");
+        router.push("/pages/login");
       }
     };
 
@@ -78,7 +78,7 @@ export default function Dashboard() {
   }, []);
 
   const fetchCharities = async () => {
-    const res = await axios.get("http://localhost:8000/charity");
+    const res = await axios.get("https://backend-digital-hero-1.onrender.com/charity");
     setCharities(res.data);
   };
 
@@ -96,7 +96,7 @@ export default function Dashboard() {
     }
 
     await axios.post(
-      "http://localhost:8000/charity/select",
+      "https://backend-digital-hero-1.onrender.com/charity/select",
       {
         charityId: selectedCharity,
         percent,
@@ -110,7 +110,7 @@ export default function Dashboard() {
   const fetchScores = async () => {
     const token = localStorage.getItem("digital-token");
 
-    const res = await axios.get("http://localhost:8000/score", {
+    const res = await axios.get("https://backend-digital-hero-1.onrender.com/score", {
       headers: { Authorization: token },
     });
 
@@ -119,7 +119,7 @@ export default function Dashboard() {
 
   const fetchDraw = async (userId: string) => {
     try {
-      const res = await axios.get("http://localhost:8000/draw/latest");
+      const res = await axios.get("https://backend-digital-hero-1.onrender.com/draw/latest");
       const drawData = res.data;
 
       setDraw(drawData);
@@ -145,7 +145,7 @@ export default function Dashboard() {
 
     try {
       await axios.post(
-        "http://localhost:8000/score/add",
+        "https://backend-digital-hero-1.onrender.com/score/add",
         { score: +score, date },
         { headers: { Authorization: token } }
       );
@@ -172,7 +172,7 @@ export default function Dashboard() {
     }
 
     const { data } = await axios.post(
-      "http://localhost:8000/payment/create-order",
+      "https://backend-digital-hero-1.onrender.com/payment/create-order",
       { plan },
       { headers: { Authorization: token } }
     );
@@ -188,7 +188,7 @@ export default function Dashboard() {
 
       handler: async (response: any) => {
         await axios.post(
-          "http://localhost:8000/payment/verify",
+          "https://backend-digital-hero-1.onrender.com/payment/verify",
           { ...response, plan },
           { headers: { Authorization: token } }
         );
@@ -196,7 +196,7 @@ export default function Dashboard() {
         alert("Payment successful!");
 
         // ✅ better than reload
-        const updatedUser = await axios.get("http://localhost:8000/user/me", {
+        const updatedUser = await axios.get("https://backend-digital-hero-1.onrender.com/user/me", {
           headers: { Authorization: token },
         });
 

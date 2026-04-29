@@ -16,7 +16,7 @@ export default function Login() {
   };
 
   const handleLogin = async () => {
-    const res = await fetch("http://localhost:8000/user/login", {
+    const res = await fetch("https://backend-digital-hero-1.onrender.com/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
